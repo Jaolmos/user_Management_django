@@ -12,8 +12,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', #Todos los datos de la base de datos POSTGRESQL
         'NAME': get_secret('DB_NAME'),
         'USER': get_secret('USER'),
-        'PASSWORD': get_secret('djangopass'),
-        'HOST': ('PASSWORD'),
+        'PASSWORD': get_secret('PASSWORD'),
+        'HOST': ('localhost'),
         'PORT': ('5432'),
     }
 }

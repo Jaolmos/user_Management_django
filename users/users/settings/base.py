@@ -1,5 +1,5 @@
-import json
 from django.core.exceptions import ImproperlyConfigured
+import json
 
 from unipath import Path
 
@@ -16,7 +16,7 @@ with open("secret.json") as f:
 
 def get_secret(secret_name, secrets=secret):
     try:
-        return secret[secret_name]
+        return secrets[secret_name]
     except:
         msg = "the variable %s does not exist" % secret_name
         raise ImproperlyConfigured(msg)
