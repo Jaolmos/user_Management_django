@@ -41,4 +41,25 @@ class UserRegisterForm(forms.ModelForm):
             if self.cleaned_data['password1'] != self.cleaned_date['password2']:
                 self.add_error('password2', 'Passwords do not match')
 
-        
+
+class LoginForm(forms.Form):
+
+    username = forms.CharField(
+        label = 'Username',
+        required = True,
+        widget=forms.TextInput(
+            attrs={
+                'placeholder':'Username'
+            }
+        )
+    )
+    password = forms.CharField(
+        label = 'Password',
+        required = True,
+        widget=forms.PasswordInput(
+            attrs={
+                'placeholder':'Contraseña'
+            }
+        )
+
+    )
