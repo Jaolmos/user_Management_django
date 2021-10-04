@@ -48,3 +48,4 @@ class LogoutView(View):
                 'users_app:user_login'
             )
         )
+
