@@ -7,11 +7,10 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>User panel</h1>
-    <h2>Wellcome: {{user}}</h2>
-    <ul>
-        <li><a href="{% url 'users_app:user_logout' %}">Sign off</a></li>
-        <li><a href="{% url 'users_app:update_password' %}">Update data</a></li>
-    </ul>
+    <h1>Change Password: {{ user.username }}</h1>
+    <form method="POST">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upgrade</button>
+    </form>
 </body>
 </html>

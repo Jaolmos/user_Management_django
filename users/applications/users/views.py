@@ -3,7 +3,8 @@ from django.views.generic import CreateView, View
 from django.views.generic.edit import FormView
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
-from .forms import UserRegisterForm, LoginForm
+from .forms import UserRegisterForm, LoginForm, UpdatePasswordForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import User
 
@@ -49,3 +50,24 @@ class LogoutView(View):
             )
         )
 
+
+class UpdatePasswordView(LoginRequiredMixin, FormView):
+    #view to update user password
+    template_name = 'users/update.html'
+    form_class = UpdatePasswordForm
+    success_url = reverse_lazy('users_app:user_login')
+    login_url = reverse_lazy('users_app:user_login')
+
+    def form_valid(self, form):
+        userrequest = self.request.user
+        user = authenticate(
+            username=userrequest.username,
+            password=form.cleaned_data['password']
+        )
+        if user:
+            new_password = form.cleaned_data['password2']
+            userrequest.set_password(new_password)
+            userrequest.save()
+
+        logout(self.request)    
+        return super(UpdatePasswordView,self).form_valid(form)
