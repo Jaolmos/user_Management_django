@@ -1,12 +1,14 @@
 from  django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, View
+from django.core.mail import send_mail 
 from django.views.generic.edit import FormView
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
-from .forms import UserRegisterForm, LoginForm, UpdatePasswordForm
+from .forms import UserRegisterForm, LoginForm, UpdatePasswordForm, VerificationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import User
+from .functions import code_generator
 
 
 
@@ -16,7 +18,8 @@ class UserRegisterView(FormView):
     success_url = '/'
 
     def form_valid(self, form):
-        
+        #The code is generated
+        code = code_generator()
         User.objects.create_user(
             form.cleaned_data['username'],
             form.cleaned_data['email'],
@@ -24,8 +27,20 @@ class UserRegisterView(FormView):
             first_name = form.cleaned_data['first_name'],
             last_name = form.cleaned_data['last_name'],
             gender = form.cleaned_data['gender'],
+            codregister = code
         )
-        return super(UserRegisterForm,self).form_valid(form)
+        #Send the code to the user's email
+        affair = 'Email confirmation'
+        message = 'Verification code: ' + code
+        sender_mail = 'thisisatest103422@gmail.com'
+        send_mail(affair, message, sender_mail,) [form.cleaned_data['email'],]
+        #Redirect to validation screen
+
+        return HttpResponseRedirect(
+            reverse(
+                'users_app:user_verification'
+            )
+        )
 
 class LoginUser(FormView):
     template_name = 'users/login.html'
@@ -71,3 +86,13 @@ class UpdatePasswordView(LoginRequiredMixin, FormView):
 
         logout(self.request)    
         return super(UpdatePasswordView,self).form_valid(form)
+
+
+class CodeVerificationView(FormView):
+    template_name = 'users/verification.html'
+    form_class = VerificationForm
+    success_url = reverse_lazy('users_app:user_login')
+
+    def form_valid(self, form): 
+
+        return super(CodeVerificationView, self).form_valid(form)

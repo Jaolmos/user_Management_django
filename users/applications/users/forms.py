@@ -100,3 +100,7 @@ class UpdatePasswordForm(forms.Form):
         )
 
     )
+
+
+class VerificationForm(forms.Form):
+    registercode = forms.CharField(required=True)       

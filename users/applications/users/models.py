@@ -16,7 +16,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField('First name', max_length=30, blank=True)
     last_name = models.CharField('First name', max_length=30, blank=True)
     gender = models.CharField('Gender', max_length=1, choices=GENDER_CHOICES, blank=True)
+    codregister = models.CharField(max_length=6, blank=True)
     is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
