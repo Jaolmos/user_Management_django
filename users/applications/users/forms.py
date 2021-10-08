@@ -103,4 +103,17 @@ class UpdatePasswordForm(forms.Form):
 
 
 class VerificationForm(forms.Form):
-    registercode = forms.CharField(required=True)       
+    registercode = forms.CharField(required=True)   
+
+    def clean_registercode(self):
+        code = self.cleaned_data['registercode']    
+
+        if len(code) == 6:
+            active = User.objects.code_validation(
+                self.kwargs['pk'],
+                code
+            )
+            if not active:
+              raise forms.ValidationError('The code is wrong')   
+        else:
+            raise forms.ValidationError('The code is wrong')

@@ -9,6 +9,6 @@ urlpatterns = [
     path('login/', views.LoginUser.as_view(),name='user_login'),
     path('logout/', views.LogoutView.as_view(),name='user_logout'),
     path('update/', views.UpdatePasswordView.as_view(),name='update_password'),
-    path('verification/', views.CodeVerificationView.as_view(),name='user_verification'),
+    path('verification/<pk>/', views.CodeVerificationView.as_view(),name='user_verification'),
     
 ]

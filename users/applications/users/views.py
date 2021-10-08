@@ -20,7 +20,7 @@ class UserRegisterView(FormView):
     def form_valid(self, form):
         #The code is generated
         code = code_generator()
-        User.objects.create_user(
+        user = User.objects.create_user(
             form.cleaned_data['username'],
             form.cleaned_data['email'],
             form.cleaned_data['password1'],
@@ -38,9 +38,11 @@ class UserRegisterView(FormView):
 
         return HttpResponseRedirect(
             reverse(
-                'users_app:user_verification'
+                'users_app:user_verification',
+                kwargs={'pk': user.id }
             )
         )
+
 
 class LoginUser(FormView):
     template_name = 'users/login.html'
@@ -94,5 +96,5 @@ class CodeVerificationView(FormView):
     success_url = reverse_lazy('users_app:user_login')
 
     def form_valid(self, form): 
-
+        
         return super(CodeVerificationView, self).form_valid(form)
